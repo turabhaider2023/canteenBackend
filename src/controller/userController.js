@@ -2,48 +2,57 @@ import { getDB } from "../config/db.js";
 import bcrypt from "bcrypt";
 
 export const registerUser = async(req,res)=>{
- try {
-       const db = getDB();
+      try {
+            const db = getDB()
+            const tempNamebody={
+                  name:{
+                        firstName:"",
+                        middleName:"",
+                        lastName:""
+                  },
+                  email:"",
+                  password:"",
+                  designation:"",
+                  role:[],
+                  office:"",
+                 mobileNumber:"",
+            officeLandlineNumber:"",
+                  officeAddress:""
+            }
 
-       const{firstName,middleName="",lastName,email,password,designation,role,office,mobileNumber,officeLandlineNumber,officeAddress}=req.body
+            for(const key in tempNamebody){
+                  if(!Object.keys(req.body).includes(key)){
+                        return res.status(400).json({message:"All keys are required"})
+                  }
 
-       const{middleName:_,...fieldRequired}=req.body;
+                  if (!req.body[key]){
+                        return res.staus(400).json({message:'values corrosponding to this key ${key} is missing'})
+                  }
+            }
 
-       console.log("requestbody",req.body)
-       console.log("field required values",fieldRequired)
-       if(Object.values(fieldRequired).some(field=>!field)){
-        return res.status(400).json({message:"All fields are required"})
-       }
+            const{email,password,...others}=req.body
+            const existingUser = await db.collection("users").findOne({email})
+            if(existingUser){
+                  return res.status(400).json({message:"use is already registered"})
 
-       const existingUser= await db.collection("users").findOne({email});
+            }
 
-       if (existingUser){
-        return res.status(400).json({message:"user is already registered"})
-       }
-       const hashedPassword= await bcrypt.hash(password,10)
+            const hashedpassword= await bcrypt.hash(password,10)
 
-       const newUser = {
-        name:{firstName,middleName,lastName},
-        email,
-        password:hashedPassword,
-        designation,
-        role,
-        mobileNumber,
-        officeLandlineNumber,
-        officeAddress,
-        createdAt: new Date()
-       }
+            const newUser = {...req.body,"createdAt":new Date(),"password":hashedpassword}
 
-       const result = await db.collection("users").insertOne(newUser);
-       return res.status(201).json({message:"user successfully registered",userId:result.insertedId})
+            const result=await db.collection("users").insertOne(newUser);
+            return res.status(201).json({message:"user registerd successfully",userId:result.insertedId})
+
+           
+            
+      } catch (error) {
+            console.error(error)
+            return res.status(500).json({message:"server error"})
+            
+      }
+ 
 
 
 
- } catch (error) {
-    console.error(error)
-    return res.status(500).json({message:"server error"})
- }
 }
-
-
-
