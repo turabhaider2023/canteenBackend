@@ -1,6 +1,8 @@
-import { getDB } from "../config/db";
+import { getDB } from "../config/db.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken"
+import dotenv from "dotenv";
+dotenv.config()
 
 
 export const loginUser= async (req,res)=>{
@@ -25,7 +27,7 @@ export const loginUser= async (req,res)=>{
       //generate jwt token
   
       const jwtToken = jwt.sign({id:user._id,email:user.email,role:user.role}
-          ,JWT_SECRET
+          ,process.env.JWT_SECRET
           ,{expiresIn:"7d"}
       );
   
@@ -34,7 +36,7 @@ export const loginUser= async (req,res)=>{
       return res.status(201).json({message:"login successful",
           jwtToken,
           user:{
-              id:user_id,
+              id:user._id,
               name:user.name,
               email:user.email,
               role:user.role,

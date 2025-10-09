@@ -56,3 +56,15 @@ export const registerUser = async(req,res)=>{
 
 
 }
+
+export const getAllUser = async(req,res)=>{
+     try {
+       const db = getDB()
+       const data=await db.collection("users").find({}).toArray()
+       return res.status(200).json({message:"user fetch successfully",users:data})
+     } catch (error) {
+      console.error("error in fetching",error)
+      return res.status(500).json({message:"sever error"});
+      
+     }
+}
