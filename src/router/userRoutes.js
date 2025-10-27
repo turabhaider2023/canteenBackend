@@ -1,13 +1,31 @@
-import {registerUser, getAllUser} from "../controller/userController.js";
 import express from "express";
-import {verifyToken} from "../middleware/authMiddleware.js"
+import {registerUser, getAllUser} from "../controller/userController.js";
+import {verifyToken} from "../middleware/verifyToken.js"
+import {verifyRoles} from "../middleware/verifyRoles.js"
 
-const router=express.Router();
+const router = express.router();
 
-router.route("/register")
-    .post(registerUser)
+// public route register new user
 
-router.route("/")
-    .get(verifyToken,getAllUser)
+router
+ .route("/register")
+ .post(registerUser);
 
-export default router;
+//  protected route only accessible with valid token
+
+router
+    .route("/profile")
+    .get(verifyToken,(req,res)=>{
+        res.json({message:"welcome to your profile",user:req.user})
+    })
+
+// admin only Token + role is required
+
+router
+    .route("/admin")
+    .get(verifyToken,verifyRoles,(req,res)=>{
+        res.json({message:"welcome Admin"})
+    })
+
+export default router
+ 

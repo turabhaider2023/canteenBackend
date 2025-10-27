@@ -1,6 +1,13 @@
 import { getDB } from "../config/db.js";
 import bcrypt from "bcrypt";
 
+import { getDB } from "../config/db.js";
+import bcrypt from "bcrypt";
+import dotenv from "dotenv";
+dotenv.config()
+
+
+
 export const registerUser = async(req,res)=>{
       try {
             const db = getDB()
@@ -56,6 +63,13 @@ export const registerUser = async(req,res)=>{
 
 
 }
+
+
+
+
+
+
+
 
 export const getAllUser = async(req,res)=>{
      try {

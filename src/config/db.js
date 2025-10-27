@@ -23,4 +23,4 @@ export const connectToServer = async()=>{
 export const getDB = ()=>{
     if(!database) throw new Error("Not connected to mongoDB database")
     return database
-}
+} 

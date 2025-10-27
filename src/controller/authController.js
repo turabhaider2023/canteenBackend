@@ -41,6 +41,7 @@ export const loginUser= async (req,res)=>{
               email:user.email,
               role:user.role,
               office:user.office,
+              
               designation:user.designation
   
           }
@@ -54,3 +55,5 @@ export const loginUser= async (req,res)=>{
 
      
 }
+
+
