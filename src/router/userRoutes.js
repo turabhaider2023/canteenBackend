@@ -16,7 +16,7 @@ router.route("/update")
 .put(updateUser)
 
 
-router.route("/delete")
+router.route("/delete/:id")
 .delete(deleteUser)
 
 router.route("/:id")
