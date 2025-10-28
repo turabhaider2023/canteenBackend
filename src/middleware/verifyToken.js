@@ -11,7 +11,7 @@ export const verifyToken = (req, res, next) => {
 
   jwt.verify(
     token,
-    process.env.ACCESS_TOKEN_SECRET,
+    process.env.JWT_SECRET,
     (err, decoded) => {
       if (err) {
         console.error('JWT verification failed:', err.message);

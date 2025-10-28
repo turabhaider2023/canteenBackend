@@ -10,7 +10,7 @@ let database;
 export const connectToServer = async()=>{
     try {
         const DB=await client.connect()
-        database=DB.db("users")
+        database=DB.db("usersManagement")
         console.log("successfully connected to the database")
     } catch (error) {
         console.error("not able to connect to database")
