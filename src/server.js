@@ -4,6 +4,7 @@ dotenv.config()
 import {connectToServer} from "./config/db.js";
 import userRoutes from "./router/userRoutes.js";
 import authRoutes from "./router/authRoutes.js";
+import categoryRoutes from "./router/categoryRoutes.js";
 
 const app = express()
 
@@ -21,6 +22,7 @@ app.get("/",(req,res)=>{
 
 app.use("/api/users/",userRoutes)
 app.use("/api/auth/",authRoutes)
+app.use("/api/categories/",categoryRoutes)
 
 //start server function
 
