@@ -5,6 +5,8 @@ import {connectToServer} from "./config/db.js";
 import userRoutes from "./router/userRoutes.js";
 import authRoutes from "./router/authRoutes.js";
 import categoryRoutes from "./router/categoryRoutes.js";
+import itemRoutes from "./router/itemRoutes.js";
+import vendorRoutes from "./router/vendorRoutes.js"
 
 const app = express()
 
@@ -20,9 +22,11 @@ app.get("/",(req,res)=>{
 
 //routes
 
-app.use("/api/users/",userRoutes)
-app.use("/api/auth/",authRoutes)
-app.use("/api/categories/",categoryRoutes)
+app.use("/api/users",userRoutes)
+app.use("/api/auth",authRoutes)
+app.use("/api/categories",categoryRoutes)
+app.use("/api/items",itemRoutes)
+app.use("/api/vendors",vendorRoutes)
 
 //start server function
 
