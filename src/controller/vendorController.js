@@ -91,13 +91,19 @@ export const updateVendor = async(req,res)=>{
         }
 
         const updatedData = {
-            name,
-            address,
-            contactPerson,
-            email,
-            contactNumber,
-            GSTNumber,
+           ...(name !==undefined && name.trim() !=="" &&{name:name.trim()}),
+            ...(address!==undefined && address.trim() !=="" &&{address:address.trim()}),
+            ...(contactPerson !==undefined 
+                && contactPerson.trim()!==""&&{contactPerson:contactPerson.trim()}),
+            ...(email !==undefined && email.trim() !==""&&{email:email.trim()}),
+            ...(contactNumber !==undefined 
+                && contactNumber.trim() !==""&&{contactNumber:contactNumber.trim()}),
+            ...(GSTNumber!==undefined && GSTNumber.trim() !==""&&{GSTNumber:GSTNumber.trim()}),
             updatedAt:new Date()
+        }
+
+        if(ObjectId.keys(updatedData).length===1){
+            return res.status(400).json({message:"no valid field to update"})
         }
 
         const result =await db.collection("vendors").updateOne({_id:new ObjectId(id)},

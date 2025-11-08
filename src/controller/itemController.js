@@ -94,17 +94,20 @@ export const updateItem = async(req,res)=>{
         if (!id || !ObjectId.isValid(id)) {
       return res.status(400).json({ message: "Invalid item ID format" });
     }
+       const updatedData ={
+        ...(name !==undefined && name.trim()!=="" &&{name:name.trim()}),
+        ...(categoryId !==undefined && {categoryId}),
+        ...(salePrice !==undefined 
+            && salePrice !=="" && !isNaN(salePrice) && {salePrice:Number(salePrice)}),
+        ...(unit !==undefined && unit.trim !=="" && {unit:unit.trim()}),
+        ...(availableStock !==undefined && availableStock !=="" 
+            && !isNaN(availableStock) && {availableStock:Number(availableStock)}),
+            updatedAt:new Date()
+       }
 
        const result= await db.collection("items").updateOne(
                      {_id:new ObjectId(id)},
-                     {$set:{
-                        name,
-                        salePrice,
-                        unit,
-                        availableStock,
-                        updatedAt:new Date()
-                     }}
-
+                    {$set:updatedData}
         )
         if(result.matchedCount===0){
             return res.status(404).json({message:"item is not found"})

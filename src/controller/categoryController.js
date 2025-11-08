@@ -14,10 +14,10 @@ export const createCategory = async(req,res)=>{
         const existing = await db.collection("categories").findOne({name})
 
         if(existing){
-            return res.status(400).json({message:"category already exist"})
+            return res.status(409).json({message:"category already exist"})
         }
 
-        const newCategory = {"name":name, 
+        const newCategory = {name, 
                             description:description||"",
                             createdAt:new Date()}
 
@@ -49,6 +49,31 @@ export const getAllCategories = async(req,res)=>{
     }
 }
 
+// get category by id 
+
+export const getCategoryById = async(req,res)=>{
+    try {
+        const db = getDB();
+        const {id}=req.params
+        
+        if(!id||!ObjectId.isValid(id)){
+            return res.status(400).json({message:"invalid category id"})
+        }
+
+        const result = await db.collection("categories").findOne({_id:ObjectId(id)})
+
+        if(!result){
+            return res.status(400).json({message:"category not found"})
+        }
+
+        return res.status(200).json({message:"category fetched successfully"})
+    } catch (error) {
+        console.error("error in fetching category")
+        return res.status(500).json({message:"internal sever error"})
+        
+    }
+}
+
 // update category by id 
 
 export const updateCategory = async(req,res)=>{
@@ -57,11 +82,23 @@ export const updateCategory = async(req,res)=>{
         const {id} = req.params
         const {name,description} = req.body
 
+        const updatedData = {
+            ...(name !==undefined && name.trim() !==""&&{name:name.trim()}),
+            ...(description !==undefinded && description.trim()!=="" 
+                &&{description:description.trim()}),
+                updatedAt: new Date(),
+
+        }
+
+        if(Object.keys(updatedData).length===1){
+            return res.status(400).json({message:"no valid field to update"})
+        }
+
         const result = await db.collection("categories")
                        .updateOne(
                         {_id:new ObjectId(id)},
                         
-                        {$set:{"name":name,"description":description,updatedAt:new Date()}})
+                        {$set:updatedData})
 
         if (result.modifiedCount===0){
             return res.status(400).json({message:"category not found or not updated"})

@@ -93,14 +93,12 @@ export const updateOffice = async (req, res) => {
     }
 
     // ✅ Safe dynamic update (ignore undefined or empty values)
-    const updatedData = {
-      ...(name !== undefined && name.trim() !== "" && { name: name.trim() }),
-      ...(location !== undefined &&
-        location.trim() !== "" && { location: location.trim() }),
-      ...(email !== undefined && email.trim() !== "" && { email: email.trim() }),
-      updatedAt: new Date(),
-    };
-
+   const updatedData = {
+    ...(name !==undefined && name.trim()!=="" &&{name:name.trim()}),
+    ...(location !==undefined && location.trim() !==""&&{location:location.trim()}),
+    ...(email !==undefined && email.trim()!=="" &&{email:email.trim()}),
+      updatedAt:new Date(),
+   };
     if (Object.keys(updatedData).length === 1) {
       // only 'updatedAt' → nothing to update
       return res.status(400).json({ message: "No valid fields to update" });
