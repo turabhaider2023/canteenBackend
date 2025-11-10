@@ -11,6 +11,9 @@ import officeRoutes from "./router/officeRoutes.js";
 import userOrderRoutes from "./router/userOdersRoutes.js";
 import designationRoutes from "./router/designationRoutes.js";
 import inventoryRoutes from "./router/inventoryRoutes.js";
+import stockTransactionRoutes from "./router/stockTransactionRoutes.js"
+import canteenRestockOrderRoutes from "./router/canteenRestockOrderRoutes.js"
+import canteenIssueOrderRoutes from "./router/canteenIssueOrderRoutes.js";
 
 const app = express()
 
@@ -35,6 +38,9 @@ app.use("/api/offices",officeRoutes)
 app.use("/api/userOrders",userOrderRoutes)
 app.use("/api/designations",designationRoutes)
 app.use("/api/inventory",inventoryRoutes)
+app.use("/api/stockTransactions",stockTransactionRoutes)
+app.use("/api/canteenRestockOrders",canteenRestockOrderRoutes)
+app.use("/api/canteenIssueOrders", canteenIssueOrderRoutes);
 
 //start server function
 
