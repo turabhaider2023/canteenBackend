@@ -197,7 +197,7 @@ export const updateUser = async (req, res) => {
 
   } catch (error) {
     console.error("Update User Error:", error);
-    return res.status(500).json({ message: "Server error" });
+    return res.status(500).json({ message: "Server error saneep" });
   }
 };
 
@@ -207,16 +207,13 @@ export const deleteUser = async (req, res) => {
     const db = getDB();
     const { id } = req.params;
 
-    if (!id)
+    if (!id||!ObjectId.isValid(id))
       return res.status(400).json({ message: "User ID is required to delete" });
 
-    const _id = toObjectId(id);
-    if (!_id) return res.status(400).json({ message: "Invalid user ID" });
-
-    const user = await db.collection("users").findOne({ _id });
+    const user = await db.collection("users").findOne({ _id:new ObjectId(id) });
     if (!user) return res.status(404).json({ message: "User not found" });
 
-    await db.collection("users").deleteOne({ _id });
+    await db.collection("users").deleteOne({ _id:new ObjectId(id) });
 
     return res
       .status(200)
